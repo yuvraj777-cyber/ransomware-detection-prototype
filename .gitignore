@@ -28,4 +28,4 @@ pnpm-debug.log*
 *.sqlite3
 
 # Project-generated event logs
-events/*.jsonl
+agent/events/*.jsonl
