@@ -1,0 +1,36 @@
+# Python
+.venv/
+venv/
+__pycache__/
+*.py[cod]
+
+# Node
+node_modules/
+npm-debug.log*
+yarn-debug.log*
+pnpm-debug.log*
+
+# Environment variables
+.env
+.env.*
+
+# IDE
+.vscode/
+.idea/
+
+# OS
+.DS_Store
+
+# Local logs / databases
+*.log
+*.db
+*.sqlite
+*.sqlite3
+
+# Project-generated event logs
+events/*.jsonl
+# ML artifacts
+models/*.joblib
+reports/*.json
+data/raw/*
+data/processed/*
