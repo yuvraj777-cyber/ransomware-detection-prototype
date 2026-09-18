@@ -10,7 +10,3 @@ def score_risk(probability: float) -> dict:
  round(probability, 3),
        "risk_level": level
 }
-if __name__ == "__main__":
-    print(score_risk(0.20))
-    print(score_risk(0.50))
-    print(score_risk(0.85))
