@@ -1,0 +1,1004 @@
+/* =========================================
+   RESET
+========================================= */
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  background: #eef2f5;
+  color: #293b49;
+}
+
+
+/* =========================================
+   DASHBOARD
+========================================= */
+
+.dashboard {
+  min-height: 100vh;
+  background: #eef2f5;
+}
+
+
+/* =========================================
+   HEADER
+========================================= */
+
+.header {
+  min-height: 100px;
+
+  background: #ffffff;
+
+  border-bottom: 1px solid #dce4e9;
+
+  padding: 0 42px;
+
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.header-left {
+  display: flex;
+  align-items: center;
+
+  gap: 14px;
+}
+
+.logo-icon {
+  width: 42px;
+  height: 42px;
+
+  background: #e8f1f6;
+
+  border: 1px solid #cbdde7;
+
+  border-radius: 8px;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  font-size: 21px;
+}
+
+.header h1 {
+  margin: 0;
+
+  font-size: 21px;
+
+  font-weight: 650;
+
+  color: #263846;
+}
+
+.header p {
+  margin: 5px 0 0;
+
+  font-size: 11px;
+
+  color: #82909a;
+}
+
+.header-right {
+  display: flex;
+
+  align-items: center;
+
+  gap: 18px;
+}
+
+.status-badge {
+  display: flex;
+
+  align-items: center;
+
+  gap: 7px;
+
+  padding: 7px 12px;
+
+  border: 1px solid;
+
+  border-radius: 20px;
+
+  font-size: 10px;
+
+  font-weight: 700;
+}
+
+.status-badge span {
+  width: 7px;
+  height: 7px;
+
+  border-radius: 50%;
+
+  background: currentColor;
+}
+
+.status-badge.safe {
+  color: #32835e;
+
+  border-color: #91c2a9;
+
+  background: #f4faf7;
+}
+
+.status-badge.warning {
+  color: #b5781b;
+
+  border-color: #d9b676;
+
+  background: #fffaf0;
+}
+
+.status-badge.danger {
+  color: #bd4939;
+
+  border-color: #dc968c;
+
+  background: #fff6f4;
+}
+
+.status-badge.offline {
+  color: #7c8891;
+
+  border-color: #c3cbd0;
+
+  background: #f7f8f9;
+}
+
+.updated {
+  font-size: 10px;
+
+  color: #8c98a0;
+}
+
+
+
+  /* MAIN CONTENT */
+
+.main-content {
+  max-width: 1250px;
+
+  margin: 0 auto;
+
+  padding: 32px 35px 45px;
+}
+
+.section-title {
+  margin-bottom: 15px;
+}
+
+.section-title h2 {
+  margin: 0;
+
+  font-size: 14px;
+
+  font-weight: 650;
+
+  color: #687985;
+}
+
+.section-title p {
+  margin: 4px 0 0;
+
+  font-size: 10px;
+
+  color: #929da5;
+}
+
+
+/* OVERVIEW CARDS */
+
+.overview-grid {
+  display: grid;
+
+  grid-template-columns:
+    1.2fr
+    1fr
+    1fr
+    1fr;
+
+  gap: 15px;
+}
+
+.overview-card {
+  min-height: 190px;
+
+  background: #ffffff;
+
+  border: 1px solid #dce4e8;
+
+  border-radius: 7px;
+
+  padding: 19px;
+
+  box-shadow:
+    0 2px 5px rgba(35, 55, 65, 0.035);
+
+  position: relative;
+
+  overflow: hidden;
+}
+
+.overview-card::before {
+  content: "";
+
+  position: absolute;
+
+  top: 0;
+  left: 0;
+  right: 0;
+
+  height: 3px;
+
+  background: #6b94aa;
+}
+
+.status-card.safe::before {
+  background: #3c966d;
+}
+
+.status-card.warning::before {
+  background: #c68a29;
+}
+
+.status-card.danger::before {
+  background: #c34c3c;
+}
+
+.status-card.offline::before {
+  background: #8a959c;
+}
+
+
+/* =========================================
+   CARD TOP
+========================================= */
+
+.card-top {
+  display: flex;
+
+  align-items: center;
+
+  justify-content: space-between;
+
+  color: #7c8b95;
+
+  font-size: 9px;
+
+  font-weight: 700;
+
+  letter-spacing: 0.7px;
+}
+
+.card-icon {
+  font-size: 16px;
+
+  color: #62869c;
+}
+
+.green-icon {
+  color: #3d966d;
+}
+
+.alert-icon {
+  color: #c65345;
+}
+
+.type-icon {
+  color: #be8530;
+}
+
+
+/* =========================================
+   SYSTEM STATUS
+========================================= */
+
+.status-main {
+  display: flex;
+
+  align-items: center;
+
+  gap: 13px;
+
+  margin-top: 28px;
+}
+
+.status-circle {
+  width: 48px;
+  height: 48px;
+
+  border-radius: 50%;
+
+  background: #e9f5ef;
+
+  color: #348a61;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  font-size: 19px;
+
+  font-weight: 700;
+}
+
+.status-card.warning .status-circle {
+  background: #fbf1df;
+
+  color: #b77b20;
+}
+
+.status-card.danger .status-circle {
+  background: #f9e6e2;
+
+  color: #bd4939;
+}
+
+.status-card.offline .status-circle {
+  background: #edf0f2;
+
+  color: #7d8991;
+}
+
+.status-main h3 {
+  margin: 0;
+
+  font-size: 19px;
+
+  font-weight: 650;
+
+  color: #354653;
+}
+
+.status-main p {
+  margin: 4px 0 0;
+
+  font-size: 9px;
+
+  color: #8d99a1;
+}
+
+
+/* =========================================
+   CARD BOTTOM
+========================================= */
+
+.card-bottom {
+  position: absolute;
+
+  bottom: 17px;
+  left: 19px;
+
+  font-size: 9px;
+
+  color: #82909a;
+}
+
+.live-dot {
+  display: inline-block;
+
+  width: 6px;
+  height: 6px;
+
+  margin-right: 5px;
+
+  border-radius: 50%;
+
+  background: #3c966d;
+}
+
+.alert-bottom {
+  color: #ba5144;
+}
+
+
+/* =========================================
+   ACTIVE ALERTS
+========================================= */
+
+.number {
+  margin-top: 28px;
+
+  font-size: 39px;
+
+  line-height: 1;
+
+  font-weight: 650;
+
+  color: #334652;
+}
+
+.description {
+  margin: 8px 0 0;
+
+  font-size: 9px;
+
+  color: #8b979f;
+}
+
+
+/* =========================================
+   RISK SCORE
+========================================= */
+
+.risk-score-card {
+  --risk-color: #3c966d;
+}
+
+.risk-score-card.warning {
+  --risk-color: #c58927;
+}
+
+.risk-score-card.danger {
+  --risk-color: #c34c3c;
+}
+
+.risk-score-card.safe {
+  --risk-color: #3c966d;
+}
+
+.score-content {
+  display: flex;
+
+  justify-content: center;
+
+  margin-top: 15px;
+}
+
+.risk-circle {
+  width: 105px;
+  height: 105px;
+
+  border-radius: 50%;
+
+  display: flex;
+
+  align-items: center;
+  justify-content: center;
+}
+
+.risk-inner {
+  width: 80px;
+  height: 80px;
+
+  border-radius: 50%;
+
+  background: #ffffff;
+
+  display: flex;
+
+  align-items: center;
+  justify-content: center;
+
+  flex-direction: column;
+}
+
+.risk-inner strong {
+  font-size: 22px;
+
+  color: #344653;
+}
+
+.risk-inner small {
+  margin-top: 2px;
+
+  font-size: 8px;
+
+  color: #8b979f;
+}
+
+.score-label {
+  margin-top: 7px;
+
+  text-align: center;
+
+  font-size: 9px;
+
+  font-weight: 700;
+
+  letter-spacing: 0.4px;
+}
+
+.score-label.safe {
+  color: #34865f;
+}
+
+.score-label.warning {
+  color: #b5771b;
+}
+
+.score-label.danger {
+  color: #bb4939;
+}
+
+
+/* =========================================
+   RISK TYPE
+========================================= */
+
+.risk-type {
+  margin-top: 29px;
+
+  font-size: 22px;
+
+  font-weight: 650;
+}
+
+.risk-type.safe {
+  color: #34865f;
+}
+
+.risk-type.warning {
+  color: #b5771b;
+}
+
+.risk-type.danger {
+  color: #bb4939;
+}
+
+
+/* =========================================
+   XAI PANEL
+========================================= */
+
+.xai-panel {
+  margin-top: 20px;
+
+  background: #ffffff;
+
+  border: 1px solid #dce4e8;
+
+  border-radius: 7px;
+
+  overflow: hidden;
+
+  box-shadow:
+    0 2px 5px rgba(35, 55, 65, 0.035);
+}
+
+
+/* =========================================
+   XAI HEADER
+========================================= */
+
+.xai-header {
+  min-height: 78px;
+
+  padding: 17px 22px;
+
+  border-bottom: 1px solid #e6ebee;
+
+  display: flex;
+
+  align-items: center;
+
+  justify-content: space-between;
+}
+
+.xai-title {
+  display: flex;
+
+  align-items: center;
+
+  gap: 13px;
+}
+
+.brain-icon {
+  width: 40px;
+  height: 40px;
+
+  border-radius: 7px;
+
+  background: #edf4f7;
+
+  border: 1px solid #d2e0e6;
+
+  display: flex;
+
+  align-items: center;
+  justify-content: center;
+
+  font-size: 20px;
+}
+
+.xai-header h2 {
+  margin: 0;
+
+  font-size: 14px;
+
+  color: #344653;
+}
+
+.xai-header p {
+  margin: 4px 0 0;
+
+  font-size: 9px;
+
+  color: #8a979f;
+}
+
+.ai-badge {
+  padding: 6px 9px;
+
+  border-radius: 4px;
+
+  background: #edf3f6;
+
+  border: 1px solid #d4e0e5;
+
+  color: #638399;
+
+  font-size: 8px;
+
+  font-weight: 700;
+
+  letter-spacing: 0.5px;
+}
+
+
+/* =========================================
+   XAI CONTENT
+========================================= */
+
+.xai-content {
+  padding: 20px 22px 22px;
+}
+
+
+/* =========================================
+   MODEL RESULT
+========================================= */
+
+.model-result {
+  min-height: 62px;
+
+  padding: 12px 15px;
+
+  background: #f6f8f9;
+
+  border: 1px solid #e3e8eb;
+
+  border-radius: 5px;
+
+  display: flex;
+
+  align-items: center;
+
+  justify-content: space-between;
+}
+
+.model-result span {
+  font-size: 9px;
+
+  font-weight: 700;
+
+  color: #788892;
+
+  letter-spacing: 0.5px;
+}
+
+.model-result p {
+  margin: 4px 0 0;
+
+  font-size: 9px;
+
+  color: #909ba2;
+}
+
+.model-result strong {
+  font-size: 22px;
+
+  color: #ba4d3e;
+}
+
+
+/* =========================================
+   FACTORS
+========================================= */
+
+.factors-section {
+  margin-top: 20px;
+}
+
+.factors-section h3 {
+  margin: 0;
+
+  font-size: 11px;
+
+  color: #4b5c68;
+}
+
+.factor-subtitle {
+  margin: 4px 0 15px;
+
+  font-size: 9px;
+
+  color: #929da5;
+}
+
+.factor-list {
+  display: flex;
+
+  flex-direction: column;
+
+  gap: 13px;
+}
+
+.factor-row {
+  display: flex;
+
+  align-items: center;
+
+  gap: 11px;
+}
+
+.factor-number {
+  width: 23px;
+  height: 23px;
+
+  flex-shrink: 0;
+
+  border-radius: 50%;
+
+  background: #edf3f6;
+
+  color: #587b91;
+
+  display: flex;
+
+  align-items: center;
+  justify-content: center;
+
+  font-size: 9px;
+
+  font-weight: 700;
+}
+
+.factor-info {
+  flex: 1;
+}
+
+.factor-name {
+  margin-bottom: 5px;
+
+  font-size: 10px;
+
+  color: #53636e;
+}
+
+.factor-bar {
+  height: 6px;
+
+  background: #e9edef;
+
+  border-radius: 10px;
+
+  overflow: hidden;
+}
+
+.factor-bar div {
+  height: 100%;
+
+  background: #6995ad;
+
+  border-radius: 10px;
+
+  transition: width 0.4s ease;
+}
+
+
+/* =========================================
+   EXPLANATION BOX
+========================================= */
+
+.explanation-box {
+  margin-top: 22px;
+
+  padding: 14px 16px;
+
+  background: #f5f9fa;
+
+  border: 1px solid #dbe7eb;
+
+  border-left: 3px solid #6a95ad;
+
+  border-radius: 4px;
+
+  display: flex;
+
+  align-items: flex-start;
+
+  gap: 11px;
+}
+
+.explanation-icon {
+  font-size: 16px;
+
+  color: #648da5;
+}
+
+.explanation-box strong {
+  display: block;
+
+  font-size: 10px;
+
+  color: #4b5d69;
+}
+
+.explanation-box p {
+  margin: 5px 0 0;
+
+  font-size: 9px;
+
+  line-height: 1.5;
+
+  color: #7d8b94;
+}
+
+
+/* =========================================
+   NO XAI
+========================================= */
+
+.no-xai {
+  padding: 45px 20px;
+
+  text-align: center;
+}
+
+.no-xai-icon {
+  font-size: 28px;
+
+  margin-bottom: 8px;
+}
+
+.no-xai h3 {
+  margin: 0;
+
+  font-size: 12px;
+
+  color: #62717c;
+}
+
+.no-xai p {
+  margin: 5px 0 0;
+
+  font-size: 9px;
+
+  color: #929da4;
+}
+
+
+/* =========================================
+   FOOTER
+========================================= */
+
+.footer {
+  margin-top: 16px;
+
+  display: flex;
+
+  align-items: center;
+
+  justify-content: space-between;
+
+  font-size: 9px;
+
+  color: #8a969e;
+}
+
+.footer span:first-child {
+  color: #3b8e68;
+}
+
+
+/* =========================================
+   RESPONSIVE
+========================================= */
+
+@media (max-width: 1050px) {
+
+  .overview-grid {
+    grid-template-columns: 1fr 1fr;
+  }
+
+  .header {
+    padding: 0 25px;
+  }
+
+  .main-content {
+    padding-left: 25px;
+    padding-right: 25px;
+  }
+
+}
+
+
+@media (max-width: 700px) {
+
+  .header {
+    padding: 18px;
+
+    flex-direction: column;
+
+    align-items: flex-start;
+
+    gap: 15px;
+  }
+
+  .header-right {
+    width: 100%;
+
+    justify-content: space-between;
+  }
+
+  .header h1 {
+    font-size: 17px;
+  }
+
+  .main-content {
+    padding: 22px 15px 35px;
+  }
+
+  .overview-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .overview-card {
+    min-height: 175px;
+  }
+
+  .xai-header {
+    padding: 15px;
+  }
+
+  .xai-content {
+    padding: 15px;
+  }
+
+  .ai-badge {
+    display: none;
+  }
+
+  .footer {
+    flex-direction: column;
+
+    align-items: flex-start;
+
+    gap: 5px;
+  }
+
+}
+
+
+@media (max-width: 450px) {
+
+  .header-right {
+    flex-direction: column;
+
+    align-items: flex-start;
+
+    gap: 8px;
+  }
+
+  .header-left {
+    align-items: flex-start;
+  }
+
+  .logo-icon {
+    width: 36px;
+    height: 36px;
+
+    font-size: 18px;
+  }
+
+  .status-main {
+    margin-top: 22px;
+  }
+
+}
