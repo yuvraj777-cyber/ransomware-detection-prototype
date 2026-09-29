@@ -9,35 +9,43 @@ function App() {
   const [error, setError] = useState(false);
 
   // =========================
-  // FETCH DATA FROM BACKEND
+  // FETCH BACKEND DATA
   // =========================
 
   const fetchData = async () => {
     try {
-      const statusRes = await axios.get("http://localhost:8000/status");
-      const alertsRes = await axios.get("http://localhost:8000/alerts");
+      const statusRes = await axios.get(
+        "http://localhost:8000/status"
+      );
 
-      setStatus(statusRes.data.latest_risk);
-      setAlerts(alertsRes.data);
+      const alertsRes = await axios.get(
+        "http://localhost:8000/alerts"
+      );
 
-      setLastUpdated(new Date().toLocaleTimeString());
+      setStatus(statusRes.data.latest_risk || "Safe");
+      setAlerts(alertsRes.data || []);
+
+      setLastUpdated(
+        new Date().toLocaleTimeString()
+      );
+
       setError(false);
     } catch (err) {
       console.error("Backend connection error:", err);
 
       setError(true);
       setStatus("Backend Offline");
+      setAlerts([]);
     }
   };
-
-  // =========================
-  // AUTO UPDATE EVERY 5 SEC
-  // =========================
 
   useEffect(() => {
     fetchData();
 
-    const interval = setInterval(fetchData, 5000);
+    const interval = setInterval(
+      fetchData,
+      5000
+    );
 
     return () => clearInterval(interval);
   }, []);
@@ -46,7 +54,8 @@ function App() {
   // LATEST ALERT
   // =========================
 
-  const latestAlert = alerts.length > 0 ? alerts[0] : null;
+  const latestAlert =
+    alerts.length > 0 ? alerts[0] : null;
 
   // =========================
   // RISK SCORE
@@ -55,7 +64,9 @@ function App() {
   let riskScore = 0;
 
   if (latestAlert) {
-    const probability = Number(latestAlert.probability);
+    const probability = Number(
+      latestAlert.probability
+    );
 
     if (!isNaN(probability)) {
       riskScore =
@@ -69,79 +80,73 @@ function App() {
   // RISK TYPE
   // =========================
 
-  let riskType = "Safe";
+  let riskType = status;
 
-  if (latestAlert?.risk_level) {
-    riskType = latestAlert.risk_level;
-  } else if (status && status !== "Loading...") {
-    riskType = status;
+  if (latestAlert) {
+    riskType =
+      latestAlert.risk_level || status;
   }
-
-  // =========================
-  // ACTIVE ALERTS
-  // =========================
-
-  const activeAlerts = alerts.length;
 
   // =========================
   // STATUS CLASS
   // =========================
 
   const getStatusClass = () => {
-    const value = status?.toLowerCase();
+    const value =
+      String(status).toLowerCase();
 
-    if (value === "safe") return "safe";
+    if (value === "safe")
+      return "safe";
 
-    if (
-      value === "suspicious" ||
-      value === "medium"
-    ) {
+    if (value === "suspicious")
       return "warning";
-    }
 
     if (
       value === "high risk" ||
-      value === "high" ||
-      value === "critical"
-    ) {
+      value === "high"
+    )
       return "danger";
-    }
 
-    if (value === "backend offline") {
+    if (
+      value === "backend offline"
+    )
       return "offline";
-    }
 
     return "safe";
   };
 
   // =========================
-  // RISK CLASS
+  // RISK SCORE CLASS
   // =========================
 
   const getRiskClass = () => {
-    if (riskScore >= 75) return "danger";
+    if (riskScore >= 75)
+      return "danger";
 
-    if (riskScore >= 40) return "warning";
+    if (riskScore >= 40)
+      return "warning";
 
     return "safe";
   };
 
   // =========================
-  // FACTORS
+  // XAI FACTORS
   // =========================
 
   const getFactors = () => {
     if (!latestAlert?.factors) {
-      return [
-        "No contributing factors available"
-      ];
+      return [];
     }
 
-    if (Array.isArray(latestAlert.factors)) {
+    if (
+      Array.isArray(latestAlert.factors)
+    ) {
       return latestAlert.factors;
     }
 
-    return String(latestAlert.factors)
+    return String(
+      latestAlert.factors
+    )
       .split(",")
       .map((factor) => factor.trim())
       .filter(Boolean);
@@ -153,55 +158,53 @@ function App() {
   // RISK CIRCLE
   // =========================
 
-  const riskAngle = Math.max(
-    0,
-    Math.min(riskScore, 100) * 3.6
-  );
-
-  const riskCircleStyle = {
-    background: `conic-gradient(
-      var(--risk-color) 0deg ${riskAngle}deg,
-      #e4e9ec ${riskAngle}deg 360deg
-    )`
-  };
+  const riskAngle =
+    Math.min(riskScore, 100) * 3.6;
 
   return (
-    <div className="dashboard">
+    <div className="app">
 
-      {/* =========================
+      {/* =================================
           HEADER
-      ========================= */}
+      ================================= */}
 
       <header className="header">
 
         <div className="header-left">
 
           <div className="logo-icon">
-            🛡
+            <img
+              src="/logo.jpeg"
+              alt="RansomWatch AI Logo"
+            />
           </div>
 
           <div>
             <h1>
-              Ransomware Detection Dashboard
+              RansomWatch AI
             </h1>
 
             <p>
-              AI-powered early detection and system monitoring
+              AI-powered early ransomware detection &<br>
+              </br> system monitoring
             </p>
           </div>
 
         </div>
+
 
         <div className="header-right">
 
           <div
             className={`status-badge ${getStatusClass()}`}
           >
+
             <span></span>
 
             {error
               ? "BACKEND OFFLINE"
-              : status.toUpperCase()}
+              : String(status).toUpperCase()}
+
           </div>
 
           <div className="updated">
@@ -213,49 +216,57 @@ function App() {
       </header>
 
 
-      {/* =========================
+      {/* =================================
           MAIN CONTENT
-      ========================= */}
+      ================================= */}
 
-      <main className="main-content">
+      <main className="content">
 
-        <div className="section-title">
-          <h2>System Overview</h2>
+        {/* PAGE TITLE */}
+
+        <div className="section-heading">
+
+          <h2>
+            System Overview
+          </h2>
 
           <p>
-            Real-time ransomware detection status
+            Real-time ransomware detection
+            status
           </p>
+
         </div>
 
 
-        {/* =========================
-            FOUR MAIN CARDS
-        ========================= */}
+        {/* =================================
+            FOUR TOP CARDS
+        ================================= */}
 
-        <div className="overview-grid">
+        <div className="cards">
 
 
           {/* SYSTEM STATUS */}
 
-          <div
-            className={`overview-card status-card ${getStatusClass()}`}
+          <section
+            className={`card status-card ${getStatusClass()}`}
           >
 
-            <div className="card-top">
+            <div className="card-header">
 
               <span>
                 SYSTEM STATUS
               </span>
 
-              <div className="card-icon green-icon">
+              <span className="card-dot">
                 ●
-              </div>
+              </span>
 
             </div>
 
-            <div className="status-main">
 
-              <div className="status-circle">
+            <div className="status-content">
+
+              <div className="status-icon">
                 ✓
               </div>
 
@@ -273,116 +284,142 @@ function App() {
 
             </div>
 
-            <div className="card-bottom">
-              <span className="live-dot"></span>
+
+            <div className="card-footer">
+
+              <span className="green-dot"></span>
+
               Sensor monitoring active
+
             </div>
 
-          </div>
+          </section>
 
 
           {/* ACTIVE ALERTS */}
 
-          <div className="overview-card">
+          <section className="card">
 
-            <div className="card-top">
+            <div className="card-header">
 
               <span>
                 ACTIVE ALERTS
               </span>
 
-              <div className="card-icon alert-icon">
+              <span className="card-icon red">
                 ⚠
-              </div>
+              </span>
 
             </div>
 
-            <div className="number">
-              {activeAlerts}
+
+            <div className="alert-number">
+              {alerts.length}
             </div>
 
             <p className="description">
               Detected ransomware alerts
             </p>
 
-            <div className="card-bottom alert-bottom">
-              {activeAlerts > 0
-                ? "Attention required"
+
+            <div className="card-footer red-text">
+
+              {alerts.length > 0
+                ? "Threats detected"
                 : "No active threats"}
+
             </div>
 
-          </div>
+          </section>
 
 
           {/* RISK SCORE */}
 
-          <div
-            className={`overview-card risk-score-card ${getRiskClass()}`}
+          <section
+            className={`card risk-card ${getRiskClass()}`}
           >
 
-            <div className="card-top">
+            <div className="card-header">
 
               <span>
                 RISK SCORE
               </span>
 
-              <div className="card-icon">
+              <span className="card-icon blue">
                 ◉
-              </div>
+              </span>
 
             </div>
 
-            <div className="score-content">
-
-              <div
-                className="risk-circle"
-                style={riskCircleStyle}
-              >
-
-                <div className="risk-inner">
-
-                  <strong>
-                    {riskScore}%
-                  </strong>
-
-                  <small>
-                    Risk
-                  </small>
-
-                </div>
-
-              </div>
-
-            </div>
 
             <div
-              className={`score-label ${getRiskClass()}`}
+              className="risk-circle"
+              style={{
+                background: `conic-gradient(
+                  ${getRiskClass() === "danger"
+                    ? "#c34c3c"
+                    : getRiskClass() === "warning"
+                    ? "#c58927"
+                    : "#397ba8"}
+                  0deg,
+                  ${getRiskClass() === "danger"
+                    ? "#c34c3c"
+                    : getRiskClass() === "warning"
+                    ? "#c58927"
+                    : "#397ba8"}
+                  ${riskAngle}deg,
+                  #e2e7ea ${riskAngle}deg,
+                  #e2e7ea 360deg
+                )`
+              }}
             >
+
+              <div className="risk-inner">
+
+                <strong>
+                  {riskScore}%
+                </strong>
+
+                <small>
+                  Risk
+                </small>
+
+              </div>
+
+            </div>
+
+
+            <div
+              className={`risk-label ${getRiskClass()}`}
+            >
+
               {riskScore >= 75
                 ? "HIGH RISK"
                 : riskScore >= 40
                 ? "SUSPICIOUS"
                 : "LOW RISK"}
+
             </div>
 
-          </div>
+          </section>
 
 
           {/* RISK TYPE */}
 
-          <div className="overview-card">
+          <section className="card">
 
-            <div className="card-top">
+            <div className="card-header">
 
               <span>
                 RISK TYPE
               </span>
 
-              <div className="card-icon type-icon">
+              <span className="card-icon orange">
                 ◆
-              </div>
+              </span>
 
             </div>
+
 
             <div
               className={`risk-type ${getRiskClass()}`}
@@ -390,24 +427,28 @@ function App() {
               {riskType}
             </div>
 
+
             <p className="description">
               Current detected threat level
             </p>
 
-            <div className="card-bottom">
+
+            <div className="card-footer">
               Based on ML prediction
             </div>
 
-          </div>
+          </section>
 
         </div>
 
 
-        {/* =========================
-            XAI SECTION
-        ========================= */}
+        {/* =================================
+            EXPLAINABLE AI
+        ================================= */}
 
         <section className="xai-panel">
+
+          {/* XAI HEADER */}
 
           <div className="xai-header">
 
@@ -431,32 +472,25 @@ function App() {
 
             </div>
 
-            <div className="ai-badge">
+
+            <div className="xai-badge">
               AI ANALYSIS
             </div>
 
           </div>
 
 
-          {latestAlert ? (
+          {/* XAI CONTENT */}
+
+          {latestAlert && factors.length > 0 ? (
 
             <div className="xai-content">
 
-              {/* MODEL PROBABILITY */}
-
               <div className="model-result">
 
-                <div>
-
-                  <span>
-                    MODEL PROBABILITY
-                  </span>
-
-                  <p>
-                    Probability of ransomware activity
-                  </p>
-
-                </div>
+                <span>
+                  Model Probability
+                </span>
 
                 <strong>
                   {riskScore}%
@@ -465,98 +499,53 @@ function App() {
               </div>
 
 
-              {/* FACTORS */}
-
-              <div className="factors-section">
-
-                <h3>
-                  Top Contributing Factors
-                </h3>
-
-                <p className="factor-subtitle">
-                  These system behaviors contributed
-                  to the model's prediction.
-                </p>
+              <p className="factor-heading">
+                Top contributing factors
+              </p>
 
 
-                <div className="factor-list">
+              <div className="factors">
 
-                  {factors
-                    .slice(0, 4)
-                    .map((factor, index) => {
+                {factors
+                  .slice(0, 4)
+                  .map(
+                    (factor, index) => (
 
-                      const width =
-                        Math.max(
-                          35,
-                          90 - index * 15
-                        );
+                      <div
+                        className="factor"
+                        key={index}
+                      >
 
-                      return (
+                        <div className="factor-number">
+                          {index + 1}
+                        </div>
 
-                        <div
-                          className="factor-row"
-                          key={index}
-                        >
+                        <div className="factor-info">
 
-                          <div className="factor-number">
-                            {index + 1}
-                          </div>
+                          <span>
+                            {factor}
+                          </span>
 
-                          <div className="factor-info">
+                          <div className="factor-bar">
 
-                            <div className="factor-name">
-                              {factor}
-                            </div>
-
-                            <div className="factor-bar">
-
-                              <div
-                                style={{
-                                  width: `${width}%`
-                                }}
-                              ></div>
-
-                            </div>
+                            <div
+                              style={{
+                                width: `${Math.max(
+                                  35,
+                                  90 -
+                                    index * 15
+                                )}%`
+                              }}
+                            ></div>
 
                           </div>
 
                         </div>
 
-                      );
+                      </div>
 
-                    })}
-
-                </div>
-
-              </div>
-
-
-              {/* SIMPLE EXPLANATION */}
-
-              <div className="explanation-box">
-
-                <div className="explanation-icon">
-                  ✦
-                </div>
-
-                <div>
-
-                  <strong>
-                    Detection Explanation
-                  </strong>
-
-                  <p>
-
-                    The AI model detected
-                    {riskScore >= 75
-                      ? " several behaviors strongly associated with ransomware activity."
-                      : riskScore >= 40
-                      ? " some behaviors that may indicate suspicious activity."
-                      : " no strong indicators of ransomware activity."}
-
-                  </p>
-
-                </div>
+                    )
+                  )}
 
               </div>
 
@@ -564,9 +553,9 @@ function App() {
 
           ) : (
 
-            <div className="no-xai">
+            <div className="xai-empty">
 
-              <div className="no-xai-icon">
+              <div className="empty-brain">
                 🧠
               </div>
 
@@ -586,11 +575,11 @@ function App() {
         </section>
 
 
-        {/* =========================
-            FOOTER
-        ========================= */}
+        {/* =================================
+            BOTTOM STATUS
+        ================================= */}
 
-        <div className="footer">
+        <div className="bottom-status">
 
           <span>
             ● Monitoring active
