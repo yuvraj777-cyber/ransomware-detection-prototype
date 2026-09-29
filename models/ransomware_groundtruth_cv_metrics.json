@@ -1,0 +1,144 @@
+{
+  "dataset": "data/processed/dataset_groundtruth_clean.csv",
+  "rows": 188,
+  "features": 48,
+  "sessions": 12,
+  "cross_session_duplicate_rows_removed": 114,
+  "accuracy": 0.9627659574468085,
+  "balanced_accuracy": 0.9565344565344565,
+  "precision": 0.9861111111111112,
+  "recall": 0.922077922077922,
+  "f1": 0.9530201342281879,
+  "confusion_matrix": [
+    [
+      110,
+      1
+    ],
+    [
+      6,
+      71
+    ]
+  ],
+  "folds": [
+    {
+      "fold": 1,
+      "train_rows": 154,
+      "test_rows": 34,
+      "train_sessions": [
+        "benign_run_03",
+        "benign_run_04",
+        "benign_run_05",
+        "benign_run_06",
+        "ransomware_run_06",
+        "ransomware_run_07",
+        "ransomware_run_08",
+        "ransomware_run_10",
+        "ransomware_run_11",
+        "ransomware_run_12"
+      ],
+      "test_sessions": [
+        "benign_run_07",
+        "ransomware_run_09"
+      ],
+      "accuracy": 0.9705882352941176,
+      "balanced_accuracy": 0.98,
+      "f1": 0.9473684210526315
+    },
+    {
+      "fold": 2,
+      "train_rows": 159,
+      "test_rows": 29,
+      "train_sessions": [
+        "benign_run_04",
+        "benign_run_05",
+        "benign_run_06",
+        "benign_run_07",
+        "ransomware_run_06",
+        "ransomware_run_07",
+        "ransomware_run_08",
+        "ransomware_run_09",
+        "ransomware_run_10",
+        "ransomware_run_12"
+      ],
+      "test_sessions": [
+        "benign_run_03",
+        "ransomware_run_11"
+      ],
+      "accuracy": 0.9655172413793104,
+      "balanced_accuracy": 0.9444444444444444,
+      "f1": 0.9411764705882353
+    },
+    {
+      "fold": 3,
+      "train_rows": 143,
+      "test_rows": 45,
+      "train_sessions": [
+        "benign_run_03",
+        "benign_run_04",
+        "benign_run_07",
+        "ransomware_run_07",
+        "ransomware_run_08",
+        "ransomware_run_09",
+        "ransomware_run_11",
+        "ransomware_run_12"
+      ],
+      "test_sessions": [
+        "benign_run_05",
+        "benign_run_06",
+        "ransomware_run_06",
+        "ransomware_run_10"
+      ],
+      "accuracy": 0.9555555555555556,
+      "balanced_accuracy": 0.96,
+      "f1": 0.9583333333333334
+    },
+    {
+      "fold": 4,
+      "train_rows": 152,
+      "test_rows": 36,
+      "train_sessions": [
+        "benign_run_03",
+        "benign_run_05",
+        "benign_run_06",
+        "benign_run_07",
+        "ransomware_run_06",
+        "ransomware_run_07",
+        "ransomware_run_09",
+        "ransomware_run_10",
+        "ransomware_run_11",
+        "ransomware_run_12"
+      ],
+      "test_sessions": [
+        "benign_run_04",
+        "ransomware_run_08"
+      ],
+      "accuracy": 1.0,
+      "balanced_accuracy": 1.0,
+      "f1": 1.0
+    },
+    {
+      "fold": 5,
+      "train_rows": 144,
+      "test_rows": 44,
+      "train_sessions": [
+        "benign_run_03",
+        "benign_run_04",
+        "benign_run_05",
+        "benign_run_06",
+        "benign_run_07",
+        "ransomware_run_06",
+        "ransomware_run_08",
+        "ransomware_run_09",
+        "ransomware_run_10",
+        "ransomware_run_11"
+      ],
+      "test_sessions": [
+        "ransomware_run_07",
+        "ransomware_run_12"
+      ],
+      "accuracy": 0.9318181818181818,
+      "balanced_accuracy": 0.94,
+      "f1": 0.9361702127659575
+    }
+  ]
+}

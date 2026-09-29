@@ -1,0 +1,9 @@
+{
+  "session_id": "ransomware_run_06",
+  "label": 1,
+  "attack_start": 1790628044.748214,
+  "attack_end": 1790628148.8174238,
+  "file_count": 50,
+  "extension": ".enc",
+  "test_directory": "/Users/narodeyuvraj113gmail.com/Desktop/ransomware-detection-prototype/agent/test_folder"
+}
