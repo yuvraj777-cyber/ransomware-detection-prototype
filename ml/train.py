@@ -42,7 +42,7 @@ def main():
     groups = df["session_id"].astype(str)
 
     # Split by session, not by individual windows, to reduce temporal leakage.
-    splitter = GroupShuffleSplit(n_splits=1, test_size=0.25, random_state=RANDOM_STATE)
+    splitter = GroupShuffleSplit(n_splits=1, test_size=0.5, random_state=RANDOM_STATE)
     train_idx, test_idx = next(splitter.split(X, y, groups=groups))
     X_train, X_test = X.iloc[train_idx], X.iloc[test_idx]
     y_train, y_test = y.iloc[train_idx], y.iloc[test_idx]

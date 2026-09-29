@@ -1,0 +1,121 @@
+{"category": "system", "event_type": "snapshot", "cpu_percent": 0.0, "memory_percent": 61.7, "disk_read_bytes": 0, "disk_write_bytes": 0, "process_count": 713, "platform": "Darwin", "timestamp": 1790583214.14248}
+{"category": "process", "event_type": "created", "pid": 40739, "name": "mdworker_shared", "parent_pid": 1, "timestamp": 1790583216.14851}
+{"category": "system", "event_type": "snapshot", "cpu_percent": 6.6, "memory_percent": 61.3, "disk_read_bytes": 1748992, "disk_write_bytes": 4567040, "process_count": 715, "platform": "Darwin", "timestamp": 1790583216.150353}
+{"category": "process", "event_type": "created", "pid": 40740, "name": "mdworker_shared", "parent_pid": 1, "timestamp": 1790583216.150927}
+{"category": "system", "event_type": "snapshot", "cpu_percent": 1.9, "memory_percent": 61.0, "disk_read_bytes": 0, "disk_write_bytes": 344064, "process_count": 715, "platform": "Darwin", "timestamp": 1790583218.15986}
+{"category": "system", "event_type": "snapshot", "cpu_percent": 1.9, "memory_percent": 60.6, "disk_read_bytes": 0, "disk_write_bytes": 24576, "process_count": 715, "platform": "Darwin", "timestamp": 1790583220.168041}
+{"category": "system", "event_type": "snapshot", "cpu_percent": 2.6, "memory_percent": 61.0, "disk_read_bytes": 0, "disk_write_bytes": 32768, "process_count": 715, "platform": "Darwin", "timestamp": 1790583222.176144}
+{"category": "system", "event_type": "snapshot", "cpu_percent": 1.5, "memory_percent": 60.7, "disk_read_bytes": 0, "disk_write_bytes": 376832, "process_count": 715, "platform": "Darwin", "timestamp": 1790583224.1842508}
+{"category": "system", "event_type": "snapshot", "cpu_percent": 3.2, "memory_percent": 61.4, "disk_read_bytes": 49152, "disk_write_bytes": 5414912, "process_count": 715, "platform": "Darwin", "timestamp": 1790583226.190335}
+{"category": "system", "event_type": "snapshot", "cpu_percent": 1.7, "memory_percent": 61.0, "disk_read_bytes": 0, "disk_write_bytes": 184320, "process_count": 715, "platform": "Darwin", "timestamp": 1790583228.1983411}
+{"category": "system", "event_type": "snapshot", "cpu_percent": 1.5, "memory_percent": 60.8, "disk_read_bytes": 0, "disk_write_bytes": 12288, "process_count": 715, "platform": "Darwin", "timestamp": 1790583230.2066061}
+{"category": "system", "event_type": "snapshot", "cpu_percent": 7.6, "memory_percent": 62.0, "disk_read_bytes": 167936, "disk_write_bytes": 675840, "process_count": 715, "platform": "Darwin", "timestamp": 1790583232.211796}
+{"category": "system", "event_type": "snapshot", "cpu_percent": 6.9, "memory_percent": 61.3, "disk_read_bytes": 0, "disk_write_bytes": 172032, "process_count": 715, "platform": "Darwin", "timestamp": 1790583234.2199502}
+{"category": "system", "event_type": "snapshot", "cpu_percent": 10.1, "memory_percent": 61.4, "disk_read_bytes": 26595328, "disk_write_bytes": 1974272, "process_count": 715, "platform": "Darwin", "timestamp": 1790583236.227988}
+{"category": "process", "event_type": "created", "pid": 40768, "name": "XprotectService", "parent_pid": 1, "timestamp": 1790583238.219498}
+{"category": "process", "event_type": "created", "pid": 40769, "name": "XPCKeychainSandboxCheck", "parent_pid": 1, "timestamp": 1790583238.220065}
+{"category": "process", "event_type": "created", "pid": 40770, "name": "extensionkitservice", "parent_pid": 1, "timestamp": 1790583238.220324}
+{"category": "process", "event_type": "created", "pid": 40771, "name": "OfficeThumbnailExtension", "parent_pid": 1, "timestamp": 1790583238.2206101}
+{"category": "process", "event_type": "created", "pid": 40772, "name": "WebThumbnailExtension", "parent_pid": 1, "timestamp": 1790583238.220803}
+{"category": "process", "event_type": "created", "pid": 40773, "name": "com.apple.WebKit.GPU", "parent_pid": 1, "timestamp": 1790583238.220971}
+{"category": "process", "event_type": "created", "pid": 40774, "name": "com.apple.WebKit.Networking", "parent_pid": 1, "timestamp": 1790583238.221144}
+{"category": "process", "event_type": "created", "pid": 40775, "name": "com.apple.WebKit.WebContent.EnhancedSecurity", "parent_pid": 1, "timestamp": 1790583238.221303}
+{"category": "process", "event_type": "created", "pid": 40776, "name": "com.apple.WebKit.WebContent.EnhancedSecurity", "parent_pid": 1, "timestamp": 1790583238.221503}
+{"category": "process", "event_type": "created", "pid": 40777, "name": "com.apple.audio.SandboxHelper", "parent_pid": 1, "timestamp": 1790583238.221668}
+{"category": "process", "event_type": "created", "pid": 40778, "name": "helpd", "parent_pid": 1, "timestamp": 1790583238.221795}
+{"category": "process", "event_type": "created", "pid": 40766, "name": "QuickLookUIHelper", "parent_pid": 1, "timestamp": 1790583238.221973}
+{"category": "process", "event_type": "created", "pid": 40767, "name": "Numbers", "parent_pid": 1, "timestamp": 1790583238.222132}
+{"category": "system", "event_type": "snapshot", "cpu_percent": 31.1, "memory_percent": 63.0, "disk_read_bytes": 186232832, "disk_write_bytes": 14336000, "process_count": 728, "platform": "Darwin", "timestamp": 1790583238.231324}
+{"category": "process", "event_type": "created", "pid": 40779, "name": "com.apple.audio.SandboxHelper", "parent_pid": 1, "timestamp": 1790583240.229485}
+{"category": "process", "event_type": "created", "pid": 40780, "name": "PlugInLibraryService", "parent_pid": 1, "timestamp": 1790583240.2304268}
+{"category": "system", "event_type": "snapshot", "cpu_percent": 11.6, "memory_percent": 62.6, "disk_read_bytes": 25346048, "disk_write_bytes": 1282048, "process_count": 727, "platform": "Darwin", "timestamp": 1790583240.233939}
+{"category": "process", "event_type": "created", "pid": 40785, "name": "com.apple.appkit.xpc.openAndSavePanelService", "parent_pid": 1, "timestamp": 1790583242.2381032}
+{"category": "process", "event_type": "created", "pid": 40786, "name": "QuickLookUIService", "parent_pid": 1, "timestamp": 1790583242.2392662}
+{"category": "system", "event_type": "snapshot", "cpu_percent": 13.4, "memory_percent": 62.6, "disk_read_bytes": 38174720, "disk_write_bytes": 5550080, "process_count": 728, "platform": "Darwin", "timestamp": 1790583242.2407832}
+{"category": "system", "event_type": "snapshot", "cpu_percent": 7.0, "memory_percent": 63.1, "disk_read_bytes": 3715072, "disk_write_bytes": 1548288, "process_count": 728, "platform": "Darwin", "timestamp": 1790583244.2450838}
+{"category": "system", "event_type": "snapshot", "cpu_percent": 7.0, "memory_percent": 62.6, "disk_read_bytes": 2875392, "disk_write_bytes": 3096576, "process_count": 728, "platform": "Darwin", "timestamp": 1790583246.2531981}
+{"category": "process", "event_type": "created", "pid": 40787, "name": "mdworker_shared", "parent_pid": 1, "timestamp": 1790583248.254355}
+{"category": "process", "event_type": "created", "pid": 40788, "name": "corecaptured", "parent_pid": 1, "timestamp": 1790583248.254893}
+{"category": "process", "event_type": "created", "pid": 40789, "name": "secd", "parent_pid": 1, "timestamp": 1790583248.255105}
+{"category": "system", "event_type": "snapshot", "cpu_percent": 12.2, "memory_percent": 63.2, "disk_read_bytes": 8175616, "disk_write_bytes": 2007040, "process_count": 731, "platform": "Darwin", "timestamp": 1790583248.2582662}
+{"category": "process", "event_type": "created", "pid": 40790, "name": "ICQFollowup", "parent_pid": 1, "timestamp": 1790583250.2581792}
+{"category": "system", "event_type": "snapshot", "cpu_percent": 12.0, "memory_percent": 63.2, "disk_read_bytes": 8261632, "disk_write_bytes": 192512, "process_count": 732, "platform": "Darwin", "timestamp": 1790583250.265135}
+{"category": "system", "event_type": "snapshot", "cpu_percent": 8.8, "memory_percent": 63.2, "disk_read_bytes": 6582272, "disk_write_bytes": 892928, "process_count": 732, "platform": "Darwin", "timestamp": 1790583252.273062}
+{"category": "process", "event_type": "created", "pid": 40795, "name": "ImageThumbnailExtension", "parent_pid": 1, "timestamp": 1790583254.271204}
+{"category": "system", "event_type": "snapshot", "cpu_percent": 8.4, "memory_percent": 63.0, "disk_read_bytes": 4923392, "disk_write_bytes": 270336, "process_count": 733, "platform": "Darwin", "timestamp": 1790583254.2773068}
+{"category": "process", "event_type": "created", "pid": 40796, "name": "PlugInLibraryService", "parent_pid": 1, "timestamp": 1790583256.2792761}
+{"category": "system", "event_type": "snapshot", "cpu_percent": 5.3, "memory_percent": 63.2, "disk_read_bytes": 11431936, "disk_write_bytes": 9400320, "process_count": 734, "platform": "Darwin", "timestamp": 1790583256.283582}
+{"category": "process", "event_type": "created", "pid": 40797, "name": "quicklookd", "parent_pid": 1, "timestamp": 1790583258.286201}
+{"category": "process", "event_type": "created", "pid": 40798, "name": "QuickLookSatellite", "parent_pid": 1, "timestamp": 1790583258.286863}
+{"category": "system", "event_type": "snapshot", "cpu_percent": 4.1, "memory_percent": 63.1, "disk_read_bytes": 946176, "disk_write_bytes": 270336, "process_count": 734, "platform": "Darwin", "timestamp": 1790583258.290524}
+{"category": "system", "event_type": "snapshot", "cpu_percent": 8.2, "memory_percent": 63.0, "disk_read_bytes": 3166208, "disk_write_bytes": 1228800, "process_count": 736, "platform": "Darwin", "timestamp": 1790583260.293697}
+{"category": "process", "event_type": "created", "pid": 40800, "name": "com.apple.WebKit.GPU", "parent_pid": 1, "timestamp": 1790583260.2949178}
+{"category": "process", "event_type": "created", "pid": 40799, "name": "com.apple.SafariServices", "parent_pid": 1, "timestamp": 1790583260.295319}
+{"category": "system", "event_type": "snapshot", "cpu_percent": 5.1, "memory_percent": 62.9, "disk_read_bytes": 20480, "disk_write_bytes": 389120, "process_count": 736, "platform": "Darwin", "timestamp": 1790583262.301846}
+{"category": "system", "event_type": "snapshot", "cpu_percent": 7.1, "memory_percent": 63.1, "disk_read_bytes": 11870208, "disk_write_bytes": 102400, "process_count": 738, "platform": "Darwin", "timestamp": 1790583264.3047738}
+{"category": "process", "event_type": "created", "pid": 40810, "name": "com.apple.audio.SandboxHelper", "parent_pid": 1, "timestamp": 1790583264.3090858}
+{"category": "process", "event_type": "created", "pid": 40811, "name": "VTDecoderXPCService", "parent_pid": 1, "timestamp": 1790583264.309453}
+{"category": "system", "event_type": "snapshot", "cpu_percent": 7.7, "memory_percent": 63.4, "disk_read_bytes": 7217152, "disk_write_bytes": 2580480, "process_count": 737, "platform": "Darwin", "timestamp": 1790583266.307872}
+{"category": "system", "event_type": "snapshot", "cpu_percent": 10.9, "memory_percent": 63.3, "disk_read_bytes": 30220288, "disk_write_bytes": 1949696, "process_count": 737, "platform": "Darwin", "timestamp": 1790583268.3158212}
+{"category": "system", "event_type": "snapshot", "cpu_percent": 9.2, "memory_percent": 63.5, "disk_read_bytes": 3878912, "disk_write_bytes": 335872, "process_count": 736, "platform": "Darwin", "timestamp": 1790583270.322979}
+{"category": "system", "event_type": "snapshot", "cpu_percent": 5.3, "memory_percent": 63.1, "disk_read_bytes": 1757184, "disk_write_bytes": 507904, "process_count": 736, "platform": "Darwin", "timestamp": 1790583272.331637}
+{"category": "system", "event_type": "snapshot", "cpu_percent": 6.8, "memory_percent": 63.0, "disk_read_bytes": 28672, "disk_write_bytes": 12288, "process_count": 737, "platform": "Darwin", "timestamp": 1790583274.337822}
+{"category": "process", "event_type": "created", "pid": 40816, "name": "mdworker_shared", "parent_pid": 1, "timestamp": 1790583274.339468}
+{"category": "system", "event_type": "snapshot", "cpu_percent": 7.1, "memory_percent": 63.0, "disk_read_bytes": 1089536, "disk_write_bytes": 2211840, "process_count": 737, "platform": "Darwin", "timestamp": 1790583276.346026}
+{"category": "system", "event_type": "snapshot", "cpu_percent": 5.0, "memory_percent": 63.2, "disk_read_bytes": 40960, "disk_write_bytes": 311296, "process_count": 737, "platform": "Darwin", "timestamp": 1790583278.355974}
+{"category": "process", "event_type": "created", "pid": 40817, "name": "BackgroundShortcutRunner", "parent_pid": 1, "timestamp": 1790583280.360863}
+{"category": "system", "event_type": "snapshot", "cpu_percent": 14.9, "memory_percent": 64.3, "disk_read_bytes": 48504832, "disk_write_bytes": 24014848, "process_count": 738, "platform": "Darwin", "timestamp": 1790583280.362644}
+{"category": "system", "event_type": "snapshot", "cpu_percent": 8.3, "memory_percent": 63.1, "disk_read_bytes": 98304, "disk_write_bytes": 409600, "process_count": 738, "platform": "Darwin", "timestamp": 1790583282.366986}
+{"category": "system", "event_type": "snapshot", "cpu_percent": 9.8, "memory_percent": 63.3, "disk_read_bytes": 1114112, "disk_write_bytes": 286720, "process_count": 739, "platform": "Darwin", "timestamp": 1790583284.374709}
+{"category": "process", "event_type": "created", "pid": 40822, "name": "Web App", "parent_pid": 1, "timestamp": 1790583284.375757}
+{"category": "process", "event_type": "created", "pid": 40823, "name": "com.apple.WebKit.WebContent", "parent_pid": 1, "timestamp": 1790583286.38127}
+{"category": "system", "event_type": "snapshot", "cpu_percent": 21.4, "memory_percent": 63.7, "disk_read_bytes": 72069120, "disk_write_bytes": 11264000, "process_count": 747, "platform": "Darwin", "timestamp": 1790583286.3830662}
+{"category": "process", "event_type": "created", "pid": 40824, "name": "com.apple.audio.SandboxHelper", "parent_pid": 1, "timestamp": 1790583286.3843951}
+{"category": "process", "event_type": "created", "pid": 40825, "name": "com.apple.WebKit.Networking", "parent_pid": 1, "timestamp": 1790583286.3847182}
+{"category": "process", "event_type": "created", "pid": 40826, "name": "com.apple.WebKit.GPU", "parent_pid": 1, "timestamp": 1790583286.3849862}
+{"category": "process", "event_type": "created", "pid": 40827, "name": "com.apple.Safari.SandboxBroker", "parent_pid": 1, "timestamp": 1790583286.385237}
+{"category": "process", "event_type": "created", "pid": 40828, "name": "com.apple.audio.SandboxHelper", "parent_pid": 1, "timestamp": 1790583286.3854709}
+{"category": "process", "event_type": "created", "pid": 40829, "name": "com.apple.appkit.xpc.openAndSavePanelService", "parent_pid": 1, "timestamp": 1790583286.385685}
+{"category": "process", "event_type": "created", "pid": 40830, "name": "QuickLookUIService", "parent_pid": 1, "timestamp": 1790583286.385897}
+{"category": "system", "event_type": "snapshot", "cpu_percent": 4.1, "memory_percent": 63.1, "disk_read_bytes": 1069056, "disk_write_bytes": 557056, "process_count": 746, "platform": "Darwin", "timestamp": 1790583288.3879292}
+{"category": "system", "event_type": "snapshot", "cpu_percent": 3.0, "memory_percent": 62.6, "disk_read_bytes": 794624, "disk_write_bytes": 98304, "process_count": 746, "platform": "Darwin", "timestamp": 1790583290.396479}
+{"category": "system", "event_type": "snapshot", "cpu_percent": 1.9, "memory_percent": 62.4, "disk_read_bytes": 172032, "disk_write_bytes": 782336, "process_count": 745, "platform": "Darwin", "timestamp": 1790583292.406048}
+{"category": "process", "event_type": "created", "pid": 40835, "name": "com.apple.WebKit.WebContent", "parent_pid": 1, "timestamp": 1790583294.411139}
+{"category": "system", "event_type": "snapshot", "cpu_percent": 3.7, "memory_percent": 63.1, "disk_read_bytes": 4136960, "disk_write_bytes": 61440, "process_count": 746, "platform": "Darwin", "timestamp": 1790583294.4139252}
+{"category": "system", "event_type": "snapshot", "cpu_percent": 4.0, "memory_percent": 63.3, "disk_read_bytes": 6287360, "disk_write_bytes": 53248, "process_count": 746, "platform": "Darwin", "timestamp": 1790583296.419344}
+{"category": "process", "event_type": "created", "pid": 40836, "name": "MTLCompilerService", "parent_pid": 1, "timestamp": 1790583298.424435}
+{"category": "system", "event_type": "snapshot", "cpu_percent": 4.1, "memory_percent": 63.6, "disk_read_bytes": 2048000, "disk_write_bytes": 1040384, "process_count": 747, "platform": "Darwin", "timestamp": 1790583298.426751}
+{"category": "system", "event_type": "snapshot", "cpu_percent": 5.7, "memory_percent": 63.7, "disk_read_bytes": 4067328, "disk_write_bytes": 1388544, "process_count": 747, "platform": "Darwin", "timestamp": 1790583300.435945}
+{"category": "system", "event_type": "snapshot", "cpu_percent": 8.2, "memory_percent": 63.5, "disk_read_bytes": 10350592, "disk_write_bytes": 3538944, "process_count": 747, "platform": "Darwin", "timestamp": 1790583302.443918}
+{"category": "system", "event_type": "snapshot", "cpu_percent": 5.1, "memory_percent": 63.1, "disk_read_bytes": 94208, "disk_write_bytes": 24576, "process_count": 747, "platform": "Darwin", "timestamp": 1790583304.449561}
+{"category": "system", "event_type": "snapshot", "cpu_percent": 4.2, "memory_percent": 62.9, "disk_read_bytes": 167936, "disk_write_bytes": 217088, "process_count": 747, "platform": "Darwin", "timestamp": 1790583306.457254}
+{"category": "system", "event_type": "snapshot", "cpu_percent": 5.5, "memory_percent": 63.3, "disk_read_bytes": 1974272, "disk_write_bytes": 606208, "process_count": 747, "platform": "Darwin", "timestamp": 1790583308.4655528}
+{"category": "system", "event_type": "snapshot", "cpu_percent": 11.6, "memory_percent": 63.9, "disk_read_bytes": 14327808, "disk_write_bytes": 2150400, "process_count": 747, "platform": "Darwin", "timestamp": 1790583310.46913}
+{"category": "system", "event_type": "snapshot", "cpu_percent": 12.5, "memory_percent": 63.6, "disk_read_bytes": 4071424, "disk_write_bytes": 1769472, "process_count": 747, "platform": "Darwin", "timestamp": 1790583312.474684}
+{"category": "system", "event_type": "snapshot", "cpu_percent": 7.1, "memory_percent": 64.2, "disk_read_bytes": 94208, "disk_write_bytes": 1150976, "process_count": 747, "platform": "Darwin", "timestamp": 1790583314.482423}
+{"category": "system", "event_type": "snapshot", "cpu_percent": 8.4, "memory_percent": 64.0, "disk_read_bytes": 1220608, "disk_write_bytes": 4714496, "process_count": 746, "platform": "Darwin", "timestamp": 1790583316.490638}
+{"category": "system", "event_type": "snapshot", "cpu_percent": 9.6, "memory_percent": 64.1, "disk_read_bytes": 1208320, "disk_write_bytes": 700416, "process_count": 746, "platform": "Darwin", "timestamp": 1790583318.497499}
+{"category": "system", "event_type": "snapshot", "cpu_percent": 11.3, "memory_percent": 64.0, "disk_read_bytes": 1007616, "disk_write_bytes": 1466368, "process_count": 746, "platform": "Darwin", "timestamp": 1790583320.503298}
+{"category": "system", "event_type": "snapshot", "cpu_percent": 7.9, "memory_percent": 63.4, "disk_read_bytes": 372736, "disk_write_bytes": 1159168, "process_count": 746, "platform": "Darwin", "timestamp": 1790583322.508379}
+{"category": "process", "event_type": "created", "pid": 40856, "name": "com.apple.WebKit.WebContent", "parent_pid": 1, "timestamp": 1790583324.504454}
+{"category": "system", "event_type": "snapshot", "cpu_percent": 3.6, "memory_percent": 63.4, "disk_read_bytes": 1634304, "disk_write_bytes": 16384, "process_count": 747, "platform": "Darwin", "timestamp": 1790583324.516522}
+{"category": "system", "event_type": "snapshot", "cpu_percent": 2.9, "memory_percent": 62.9, "disk_read_bytes": 192512, "disk_write_bytes": 49152, "process_count": 747, "platform": "Darwin", "timestamp": 1790583326.524467}
+{"category": "system", "event_type": "snapshot", "cpu_percent": 1.8, "memory_percent": 62.7, "disk_read_bytes": 319488, "disk_write_bytes": 479232, "process_count": 747, "platform": "Darwin", "timestamp": 1790583328.532605}
+{"category": "process", "event_type": "created", "pid": 40857, "name": "com.apple.WebKit.WebContent", "parent_pid": 1, "timestamp": 1790583330.5264168}
+{"category": "system", "event_type": "snapshot", "cpu_percent": 4.3, "memory_percent": 62.7, "disk_read_bytes": 475136, "disk_write_bytes": 16384, "process_count": 747, "platform": "Darwin", "timestamp": 1790583330.540032}
+{"category": "system", "event_type": "snapshot", "cpu_percent": 8.1, "memory_percent": 63.2, "disk_read_bytes": 3039232, "disk_write_bytes": 1302528, "process_count": 747, "platform": "Darwin", "timestamp": 1790583332.548463}
+{"category": "system", "event_type": "snapshot", "cpu_percent": 11.5, "memory_percent": 63.6, "disk_read_bytes": 11968512, "disk_write_bytes": 4202496, "process_count": 747, "platform": "Darwin", "timestamp": 1790583334.557096}
+{"category": "system", "event_type": "snapshot", "cpu_percent": 8.8, "memory_percent": 63.7, "disk_read_bytes": 3317760, "disk_write_bytes": 765952, "process_count": 747, "platform": "Darwin", "timestamp": 1790583336.563401}
+{"category": "system", "event_type": "snapshot", "cpu_percent": 6.8, "memory_percent": 63.8, "disk_read_bytes": 184320, "disk_write_bytes": 2502656, "process_count": 747, "platform": "Darwin", "timestamp": 1790583338.5699599}
+{"category": "system", "event_type": "snapshot", "cpu_percent": 9.0, "memory_percent": 63.7, "disk_read_bytes": 733184, "disk_write_bytes": 2998272, "process_count": 747, "platform": "Darwin", "timestamp": 1790583340.578652}
+{"category": "system", "event_type": "snapshot", "cpu_percent": 5.9, "memory_percent": 63.7, "disk_read_bytes": 2621440, "disk_write_bytes": 1515520, "process_count": 747, "platform": "Darwin", "timestamp": 1790583342.587883}
+{"category": "system", "event_type": "snapshot", "cpu_percent": 7.5, "memory_percent": 64.1, "disk_read_bytes": 487424, "disk_write_bytes": 217088, "process_count": 747, "platform": "Darwin", "timestamp": 1790583344.596562}
+{"category": "system", "event_type": "snapshot", "cpu_percent": 9.0, "memory_percent": 64.2, "disk_read_bytes": 2347008, "disk_write_bytes": 3403776, "process_count": 747, "platform": "Darwin", "timestamp": 1790583346.603555}
+{"category": "system", "event_type": "snapshot", "cpu_percent": 9.5, "memory_percent": 63.9, "disk_read_bytes": 1490944, "disk_write_bytes": 1560576, "process_count": 747, "platform": "Darwin", "timestamp": 1790583348.613463}
+{"category": "system", "event_type": "snapshot", "cpu_percent": 12.3, "memory_percent": 64.2, "disk_read_bytes": 6103040, "disk_write_bytes": 1028096, "process_count": 747, "platform": "Darwin", "timestamp": 1790583350.620262}
+{"category": "system", "event_type": "snapshot", "cpu_percent": 9.1, "memory_percent": 63.9, "disk_read_bytes": 339968, "disk_write_bytes": 2228224, "process_count": 747, "platform": "Darwin", "timestamp": 1790583352.6279821}
+{"category": "system", "event_type": "snapshot", "cpu_percent": 4.1, "memory_percent": 63.6, "disk_read_bytes": 458752, "disk_write_bytes": 659456, "process_count": 747, "platform": "Darwin", "timestamp": 1790583354.6368241}
+{"category": "system", "event_type": "snapshot", "cpu_percent": 7.3, "memory_percent": 64.2, "disk_read_bytes": 1724416, "disk_write_bytes": 1351680, "process_count": 747, "platform": "Darwin", "timestamp": 1790583356.644782}
+{"category": "system", "event_type": "snapshot", "cpu_percent": 12.4, "memory_percent": 65.4, "disk_read_bytes": 4583424, "disk_write_bytes": 3428352, "process_count": 747, "platform": "Darwin", "timestamp": 1790583358.653274}
+{"category": "system", "event_type": "snapshot", "cpu_percent": 5.8, "memory_percent": 64.8, "disk_read_bytes": 294912, "disk_write_bytes": 524288, "process_count": 747, "platform": "Darwin", "timestamp": 1790583360.660901}
+{"category": "system", "event_type": "snapshot", "cpu_percent": 4.6, "memory_percent": 63.9, "disk_read_bytes": 352256, "disk_write_bytes": 1363968, "process_count": 747, "platform": "Darwin", "timestamp": 1790583362.668845}

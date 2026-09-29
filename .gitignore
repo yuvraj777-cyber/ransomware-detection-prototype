@@ -29,3 +29,17 @@ pnpm-debug.log*
 
 # Project-generated event logs
 events/*.jsonl
+# Runtime data
+events.db
+agent/test_folder/
+agent/events/*.jsonl
+agent/events/*_start.txt
+
+# Local / generated frontend files
+frontend/dashboard/build/
+
+# Local backups / archives
+*.original.*
+models/archive/
+
+response_log.txt
