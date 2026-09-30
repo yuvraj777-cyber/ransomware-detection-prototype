@@ -21,10 +21,6 @@ function App() {
   const [lastUpdated, setLastUpdated] = useState("--:--:--");
   const [error, setError] = useState(false);
 
-  // =========================================
-  // FETCH ALL DASHBOARD DATA
-  // =========================================
-
   const fetchData = async () => {
     try {
       const [statusRes, statsRes, alertsRes, historyRes] =
@@ -35,19 +31,25 @@ function App() {
           axios.get(`${API_BASE}/history?hours=24&limit=30`)
         ]);
 
-      setStats(statsRes.data || null);
-      setAlerts(Array.isArray(alertsRes.data) ? alertsRes.data : []);
+      const statsData = statsRes.data || {};
+      const alertData = Array.isArray(alertsRes.data)
+        ? alertsRes.data
+        : Array.isArray(alertsRes.data?.items)
+        ? alertsRes.data.items
+        : [];
 
-      const historyItems = Array.isArray(historyRes.data)
+      const historyData = Array.isArray(historyRes.data)
         ? historyRes.data
         : Array.isArray(historyRes.data?.items)
         ? historyRes.data.items
         : [];
 
-      setHistory(historyItems);
+      setStats(statsData);
+      setAlerts(alertData);
+      setHistory(historyData);
 
       setStatus(
-        statsRes.data?.latest?.risk_level ||
+        statsData?.latest?.risk_level ||
         statusRes.data?.latest_risk ||
         "Safe"
       );
@@ -56,15 +58,10 @@ function App() {
       setError(false);
     } catch (err) {
       console.error("Backend connection error:", err);
-
       setError(true);
       setStatus("Backend Offline");
     }
   };
-
-  // =========================================
-  // AUTO UPDATE EVERY 5 SEC
-  // =========================================
 
   useEffect(() => {
     fetchData();
@@ -74,55 +71,40 @@ function App() {
     return () => clearInterval(interval);
   }, []);
 
-  // =========================================
-  // LATEST DETECTION
-  // =========================================
-
   const latestAlert = alerts.length > 0 ? alerts[0] : null;
 
-  // =========================================
-  // RISK SCORE
-  // =========================================
+  const riskScore = useMemo(() => {
+    const probability = Number(stats?.latest?.probability ?? 0);
 
-  let riskScore = 0;
+    if (Number.isNaN(probability)) return 0;
 
-  if (stats?.latest?.probability !== undefined) {
-    const probability = Number(stats.latest.probability);
-
-    if (!Number.isNaN(probability)) {
-      riskScore =
+    return Math.max(
+      0,
+      Math.min(
+        100,
         probability <= 1
           ? Math.round(probability * 100)
-          : Math.round(probability);
-    }
-  }
-
-  // =========================================
-  // RISK TYPE
-  // =========================================
+          : Math.round(probability)
+      )
+    );
+  }, [stats]);
 
   const riskType =
     stats?.latest?.risk_level ||
     status ||
     "Safe";
 
-  // =========================================
-  // STATUS CLASS
-  // =========================================
+  const dashboardStats = {
+    cycles: stats?.total_cycles ?? 0,
+    filesObserved: stats?.files_observed ?? 0,
+    suspiciousActivities: stats?.suspicious_activities ?? 0,
+    highRiskDetections: stats?.high_risk_detections ?? 0,
+    filesystemEvents: stats?.filesystem_events ?? 0,
+    ransomwareIncidents: stats?.ransomware_incidents ?? 0
+  };
 
-  const getStatusClass = (value = status) => {
+  const getRiskTone = (value = riskType) => {
     const normalized = String(value).toLowerCase();
-
-    if (normalized === "safe") {
-      return "safe";
-    }
-
-    if (
-      normalized === "suspicious" ||
-      normalized === "medium"
-    ) {
-      return "warning";
-    }
 
     if (
       normalized === "high risk" ||
@@ -130,6 +112,13 @@ function App() {
       normalized === "critical"
     ) {
       return "danger";
+    }
+
+    if (
+      normalized === "suspicious" ||
+      normalized === "medium"
+    ) {
+      return "warning";
     }
 
     if (
@@ -142,865 +131,672 @@ function App() {
     return "safe";
   };
 
-  // =========================================
-  // RISK CLASS
-  // =========================================
-
   const getRiskClass = () => {
-    if (riskScore >= 70) {
-      return "danger";
-    }
-
-    if (riskScore >= 35) {
-      return "warning";
-    }
-
+    if (riskScore >= 70) return "danger";
+    if (riskScore >= 35) return "warning";
     return "safe";
   };
 
-  // =========================================
-  // STATISTICS
-  // =========================================
+  const formatTime = (value) => {
+    if (!value) return "--";
 
-  const dashboardStats = {
-    cycles: stats?.total_cycles ?? 0,
-    filesObserved: stats?.files_observed ?? 0,
-    suspiciousActivities: stats?.suspicious_activities ?? 0,
-    highRiskDetections: stats?.high_risk_detections ?? 0,
-    filesystemEvents: stats?.filesystem_events ?? 0,
-    ransomwareIncidents: stats?.ransomware_incidents ?? 0
+    const date = new Date(value);
+
+    if (Number.isNaN(date.getTime())) {
+      return String(value);
+    }
+
+    return date.toLocaleTimeString([], {
+      hour: "2-digit",
+      minute: "2-digit",
+      second: "2-digit"
+    });
   };
 
-  // =========================================
-  // XAI INDICATORS
-  // =========================================
+  const formatDateTime = (value) => {
+    if (!value) return "--";
 
-  const getIndicators = () => {
+    const date = new Date(value);
+
+    if (Number.isNaN(date.getTime())) {
+      return String(value);
+    }
+
+    return date.toLocaleString([], {
+      day: "2-digit",
+      month: "short",
+      hour: "2-digit",
+      minute: "2-digit"
+    });
+  };
+
+  const normalizeIndicators = (alert) => {
     const raw =
-      latestAlert?.main_contributing_indicators ??
-      latestAlert?.indicators ??
-      latestAlert?.factors ??
+      alert?.main_contributing_indicators ??
+      alert?.indicators ??
+      alert?.factors ??
       [];
 
     if (Array.isArray(raw)) {
-      return raw;
-    }
-
-    if (typeof raw === "string") {
-      try {
-        const parsed = JSON.parse(raw);
-
-        if (Array.isArray(parsed)) {
-          return parsed;
+      return raw.map((item) => {
+        if (typeof item === "string") {
+          return {
+            name: item,
+            value: ""
+          };
         }
 
-        return [parsed];
-      } catch {
-        return raw
-          .split(",")
-          .map((item) => item.trim())
-          .filter(Boolean);
-      }
+        return {
+          name:
+            item?.name ||
+            item?.indicator ||
+            item?.feature ||
+            "Behavioral indicator",
+          value:
+            item?.value ??
+            item?.count ??
+            item?.description ??
+            ""
+        };
+      });
     }
 
-    if (raw && typeof raw === "object") {
-      return Object.entries(raw).map(
-        ([key, value]) => `${key}: ${value}`
-      );
+    if (typeof raw === "object" && raw !== null) {
+      return Object.entries(raw).map(([name, value]) => ({
+        name,
+        value
+      }));
     }
 
     return [];
   };
 
-  const indicators = getIndicators();
-
-  const formatIndicator = (indicator) => {
-    if (typeof indicator === "string") {
-      return indicator;
-    }
-
-    if (indicator && typeof indicator === "object") {
-      if (indicator.name) {
-        return indicator.value !== undefined
-          ? `${indicator.name}: ${indicator.value}`
-          : indicator.name;
-      }
-
-      const entries = Object.entries(indicator);
-
-      if (entries.length > 0) {
-        return entries
-          .map(([key, value]) => `${key}: ${value}`)
-          .join(" • ");
-      }
-    }
-
-    return String(indicator);
-  };
-
-  // =========================================
-  // HISTORY FOR CHART
-  // =========================================
+  const indicators = normalizeIndicators(latestAlert);
 
   const chartData = useMemo(() => {
     return [...history]
       .reverse()
-      .map((item) => ({
-        time: new Date(item.timestamp).toLocaleTimeString([], {
-          hour: "2-digit",
-          minute: "2-digit"
-        }),
-        probability:
-          Number(item.probability ?? 0) <= 1
-            ? Math.round(Number(item.probability ?? 0) * 100)
-            : Math.round(Number(item.probability ?? 0))
-      }));
+      .map((item, index) => {
+        const probability = Number(item?.probability ?? 0);
+
+        return {
+          index: index + 1,
+          time: formatTime(item?.timestamp),
+          risk:
+            probability <= 1
+              ? Math.round(probability * 100)
+              : Math.round(probability)
+        };
+      });
   }, [history]);
 
-  // =========================================
-  // CURRENT MONITORING STATE
-  // =========================================
+  const latestTimestamp =
+    stats?.latest?.timestamp ||
+    latestAlert?.timestamp;
 
-  const monitoringActive =
-    !error &&
-    (
-      stats?.latest?.timestamp
-        ? Date.now() -
-            new Date(stats.latest.timestamp).getTime() <
-          30000
-        : false
-    );
-
-  // =========================================
-  // RISK CIRCLE
-  // =========================================
-
-  const riskAngle = Math.max(
-    0,
-    Math.min(riskScore, 100) * 3.6
-  );
-
-  const riskCircleStyle = {
-    background: `conic-gradient(
-      var(--risk-color) 0deg ${riskAngle}deg,
-      #e4e9ec ${riskAngle}deg 360deg
-    )`
-  };
+  const liveMonitoring = !error;
 
   return (
-    <div className="dashboard">
+    <div className="app-shell">
 
-      {/* =========================================
-          HEADER
-      ========================================= */}
+      {/* SIDEBAR */}
+      <aside className="sidebar">
+        <div className="brand">
+          <img
+            src="/ransomwatch-ai-logo.png"
+            alt="RansomWatchAI"
+            className="brand-logo"
+          />
 
-      <header className="header">
-
-        <div className="header-left">
-
-          <div className="logo-icon">
-            🛡
+          <div className="brand-copy">
+            <div className="brand-name">RansomWatchAI</div>
+            <div className="brand-subtitle">Early threat detection</div>
           </div>
-
-          <div>
-            <h1>
-              Ransomware Detection Dashboard
-            </h1>
-
-            <p>
-              AI-powered early detection and system monitoring
-            </p>
-          </div>
-
         </div>
 
-        <div className="header-right">
+        <nav className="sidebar-nav">
+          <div className="nav-label">MONITORING</div>
 
-          <div
-            className={`status-badge ${getStatusClass()}`}
-          >
-            <span></span>
+          <a href="#overview" className="nav-item active">
+            <span className="nav-mark">01</span>
+            Overview
+          </a>
 
-            {error
-              ? "BACKEND OFFLINE"
-              : status.toUpperCase()}
+          <a href="#history" className="nav-item">
+            <span className="nav-mark">02</span>
+            Detection history
+          </a>
+
+          <a href="#xai" className="nav-item">
+            <span className="nav-mark">03</span>
+            Explainability
+          </a>
+        </nav>
+
+        <div className="sidebar-bottom">
+          <div className="environment-label">ENVIRONMENT</div>
+
+          <div className="environment-box">
+            <span className={`environment-dot ${liveMonitoring ? "online" : "offline"}`} />
+            <div>
+              <strong>Prototype endpoint</strong>
+              <span>Controlled monitoring</span>
+            </div>
           </div>
 
-          <div className="updated">
-            Updated {lastUpdated}
+          <div className="sidebar-version">
+            RansomWatchAI · v1.0
           </div>
-
         </div>
+      </aside>
 
-      </header>
-
-      {/* =========================================
-          MAIN CONTENT
-      ========================================= */}
-
+      {/* MAIN */}
       <main className="main-content">
 
-        <div className="section-title">
-          <h2>System Overview</h2>
-
-          <p>
-            Real-time ransomware detection status
-          </p>
-        </div>
-
-        {/* =========================================
-            FOUR MAIN CARDS
-        ========================================= */}
-
-        <div className="overview-grid">
-
-          {/* SYSTEM STATUS */}
-
-          <div
-            className={`overview-card status-card ${getStatusClass()}`}
-          >
-
-            <div className="card-top">
-              <span>SYSTEM STATUS</span>
-
-              <div className="card-icon green-icon">
-                ●
-              </div>
-            </div>
-
-            <div className="status-main">
-
-              <div className="status-circle">
-                {error ? "!" : "✓"}
-              </div>
-
-              <div>
-
-                <h3>
-                  {status}
-                </h3>
-
-                <p>
-                  Monitoring system activity
-                </p>
-
-              </div>
-
-            </div>
-
-            <div className="card-bottom">
-              <span className="live-dot"></span>
-
-              {monitoringActive
-                ? "Sensor monitoring active"
-                : error
-                ? "Backend connection unavailable"
-                : "Waiting for monitoring cycle"}
-            </div>
-
+        {/* TOP BAR */}
+        <header className="topbar">
+          <div>
+            <div className="eyebrow">SECURITY OPERATIONS</div>
+            <h1>Monitoring overview</h1>
+            <p>Live ransomware activity analysis and detection history.</p>
           </div>
 
-          {/* RECENT ALERTS */}
-
-          <div className="overview-card">
-
-            <div className="card-top">
-
-              <span>
-                RECENT DETECTIONS
-              </span>
-
-              <div className="card-icon alert-icon">
-                ⚠
-              </div>
-
+          <div className="topbar-right">
+            <div className={`connection-pill ${liveMonitoring ? "connected" : "disconnected"}`}>
+              <span className="connection-dot" />
+              {liveMonitoring ? "System connected" : "Backend offline"}
             </div>
 
-            <div className="number">
-              {alerts.length}
+            <div className="updated-text">
+              Updated {lastUpdated}
+            </div>
+          </div>
+        </header>
+
+        {/* OVERVIEW */}
+        <section id="overview" className="section-block">
+
+          <div className="section-heading">
+            <div>
+              <span className="section-kicker">LIVE STATUS</span>
+              <h2>Current protection state</h2>
             </div>
 
-            <p className="description">
-              Non-safe detections shown
-            </p>
-
-            <div className="card-bottom alert-bottom">
-
-              {dashboardStats.suspiciousActivities > 0
-                ? `${dashboardStats.suspiciousActivities} suspicious activities in 24h`
-                : "No suspicious activity"}
-
+            <div className="section-note">
+              Refresh interval · 5 seconds
             </div>
-
           </div>
 
-          {/* RISK SCORE */}
+          <div className="overview-grid">
 
-          <div
-            className={`overview-card risk-score-card ${getRiskClass()}`}
-          >
+            {/* SYSTEM STATUS */}
+            <article className="overview-card status-card">
+              <div className="card-label">SYSTEM STATUS</div>
 
-            <div className="card-top">
-
-              <span>
-                RISK SCORE
-              </span>
-
-              <div className="card-icon">
-                ◉
-              </div>
-
-            </div>
-
-            <div className="score-content">
-
-              <div
-                className="risk-circle"
-                style={riskCircleStyle}
-              >
-
-                <div className="risk-inner">
-
-                  <strong>
-                    {riskScore}%
-                  </strong>
-
-                  <small>
-                    Risk
-                  </small>
-
+              <div className="status-row">
+                <div className={`status-orb ${getRiskTone(status)}`}>
+                  <span />
                 </div>
 
+                <div>
+                  <div className="status-value">
+                    {liveMonitoring ? status : "Offline"}
+                  </div>
+
+                  <div className="status-caption">
+                    {liveMonitoring
+                      ? "Continuous monitoring active"
+                      : "Waiting for backend connection"}
+                  </div>
+                </div>
               </div>
 
-            </div>
+              <div className="card-divider" />
 
-            <div
-              className={`score-label ${getRiskClass()}`}
-            >
-              {riskScore >= 70
-                ? "HIGH RISK"
-                : riskScore >= 35
-                ? "SUSPICIOUS"
-                : "LOW RISK"}
-            </div>
+              <div className="card-meta">
+                <span>Latest cycle</span>
+                <strong>{formatTime(latestTimestamp)}</strong>
+              </div>
+            </article>
 
-          </div>
+            {/* RISK SCORE */}
+            <article className="overview-card risk-card">
+              <div className="card-label">LATEST RISK SCORE</div>
 
-          {/* RISK TYPE */}
+              <div className="risk-layout">
+                <div className={`risk-ring ${getRiskClass()}`}>
+                  <div className="risk-ring-inner">
+                    <strong>{riskScore}</strong>
+                    <span>/ 100</span>
+                  </div>
+                </div>
 
-          <div className="overview-card">
+                <div className="risk-copy">
+                  <div className={`risk-badge ${getRiskClass()}`}>
+                    {riskType}
+                  </div>
 
-            <div className="card-top">
+                  <div className="risk-description">
+                    Model probability for the latest monitoring cycle.
+                  </div>
+                </div>
+              </div>
+            </article>
 
-              <span>
-                RISK TYPE
-              </span>
+            {/* CYCLES */}
+            <article className="overview-card compact-card">
+              <div className="card-label">MONITORING CYCLES</div>
 
-              <div className="card-icon type-icon">
-                ◆
+              <div className="metric-number">
+                {dashboardStats.cycles.toLocaleString()}
               </div>
 
-            </div>
+              <div className="metric-caption">
+                Analysis cycles recorded
+              </div>
 
-            <div
-              className={`risk-type ${getRiskClass()}`}
-            >
-              {riskType}
-            </div>
+              <div className="metric-line">
+                <span />
+              </div>
+            </article>
 
-            <p className="description">
-              Current detected threat level
-            </p>
+            {/* INCIDENTS */}
+            <article className="overview-card compact-card incident-card">
+              <div className="card-label">RANSOMWARE INCIDENTS</div>
 
-            <div className="card-bottom">
-              Based on ML prediction
-            </div>
+              <div className="metric-number">
+                {dashboardStats.ransomwareIncidents.toLocaleString()}
+              </div>
+
+              <div className="metric-caption">
+                Detected transitions to high risk
+              </div>
+
+              <div className="incident-status">
+                <span className="incident-dot" />
+                Incident tracking enabled
+              </div>
+            </article>
 
           </div>
+        </section>
 
-        </div>
-
-        {/* =========================================
-            MONITORING STATISTICS
-        ========================================= */}
-
-        <section className="statistics-section">
-
-          <div className="section-title statistics-title">
-            <h2>Monitoring Statistics</h2>
-
-            <p>
-              Continuous monitoring summary for the last 24 hours
-            </p>
+        {/* STATISTICS */}
+        <section className="section-block">
+          <div className="section-heading">
+            <div>
+              <span className="section-kicker">24 HOUR WINDOW</span>
+              <h2>Monitoring statistics</h2>
+            </div>
           </div>
 
           <div className="statistics-grid">
 
-            <div className="stat-card">
-              <span>MONITORING CYCLES</span>
-              <strong>{dashboardStats.cycles}</strong>
-              <small>Analysis cycles completed</small>
-            </div>
+            <StatCard
+              label="Files observed"
+              value={dashboardStats.filesObserved}
+              helper="Unique file paths seen"
+              tone="neutral"
+            />
 
-            <div className="stat-card">
-              <span>FILES OBSERVED</span>
-              <strong>{dashboardStats.filesObserved}</strong>
-              <small>Files seen by the monitor</small>
-            </div>
+            <StatCard
+              label="Filesystem events"
+              value={dashboardStats.filesystemEvents}
+              helper="Created, modified, deleted, renamed"
+              tone="neutral"
+            />
 
-            <div className="stat-card warning-stat">
-              <span>SUSPICIOUS ACTIVITIES</span>
-              <strong>{dashboardStats.suspiciousActivities}</strong>
-              <small>Suspicious monitoring results</small>
-            </div>
+            <StatCard
+              label="Suspicious activities"
+              value={dashboardStats.suspiciousActivities}
+              helper="Cycles classified as suspicious"
+              tone="warning"
+            />
 
-            <div className="stat-card danger-stat">
-              <span>HIGH-RISK DETECTIONS</span>
-              <strong>{dashboardStats.highRiskDetections}</strong>
-              <small>High-risk ML detections</small>
-            </div>
-
-            <div className="stat-card">
-              <span>FILESYSTEM EVENTS</span>
-              <strong>{dashboardStats.filesystemEvents}</strong>
-              <small>Meaningful filesystem events</small>
-            </div>
-
-            <div className="stat-card danger-stat">
-              <span>RANSOMWARE INCIDENTS</span>
-              <strong>{dashboardStats.ransomwareIncidents}</strong>
-              <small>Detected incident transitions</small>
-            </div>
+            <StatCard
+              label="High-risk detections"
+              value={dashboardStats.highRiskDetections}
+              helper="Cycles above the high-risk threshold"
+              tone="danger"
+            />
 
           </div>
-
         </section>
 
-        {/* =========================================
-            24 HOUR ACTIVITY
-        ========================================= */}
+        {/* CHART + LATEST DETECTION */}
+        <section className="content-two-column">
 
-        <section className="history-panel">
-
-          <div className="history-header">
-
-            <div>
-              <h2>24-Hour Detection History</h2>
-
-              <p>
-                Risk probability across completed monitoring cycles
-              </p>
-            </div>
-
-            <div className="history-badge">
-              LAST 24 HOURS
-            </div>
-
-          </div>
-
-          <div className="chart-wrapper">
-
-            {chartData.length > 0 ? (
-
-              <ResponsiveContainer
-                width="100%"
-                height={260}
-              >
-
-                <LineChart data={chartData}>
-
-                  <CartesianGrid
-                    strokeDasharray="3 3"
-                    stroke="#e5eaed"
-                  />
-
-                  <XAxis
-                    dataKey="time"
-                    tick={{
-                      fontSize: 9,
-                      fill: "#82909a"
-                    }}
-                    axisLine={{
-                      stroke: "#dce4e8"
-                    }}
-                    tickLine={false}
-                  />
-
-                  <YAxis
-                    domain={[0, 100]}
-                    tick={{
-                      fontSize: 9,
-                      fill: "#82909a"
-                    }}
-                    axisLine={{
-                      stroke: "#dce4e8"
-                    }}
-                    tickLine={false}
-                  />
-
-                  <Tooltip
-                    formatter={(value) => [
-                      `${value}%`,
-                      "Risk Probability"
-                    ]}
-                    contentStyle={{
-                      border: "1px solid #dce4e8",
-                      borderRadius: "6px",
-                      fontSize: "10px"
-                    }}
-                  />
-
-                  <Line
-                    type="monotone"
-                    dataKey="probability"
-                    stroke="#62869c"
-                    strokeWidth={2}
-                    dot={{
-                      r: 3
-                    }}
-                    activeDot={{
-                      r: 5
-                    }}
-                  />
-
-                </LineChart>
-
-              </ResponsiveContainer>
-
-            ) : (
-
-              <div className="empty-history">
-                <span>◌</span>
-
-                <p>
-                  No monitoring history available yet.
-                </p>
-
-              </div>
-
-            )}
-
-          </div>
-
-        </section>
-
-        {/* =========================================
-            XAI SECTION
-        ========================================= */}
-
-        <section className="xai-panel">
-
-          <div className="xai-header">
-
-            <div className="xai-title">
-
-              <div className="brain-icon">
-                🧠
-              </div>
-
+          <article id="history" className="panel chart-panel">
+            <div className="panel-header">
               <div>
-
-                <h2>
-                  Explainable AI
-                </h2>
-
-                <p>
-                  Why was this risk detected?
-                </p>
-
+                <span className="section-kicker">DETECTION HISTORY</span>
+                <h2>Risk trend · last 24 hours</h2>
               </div>
 
+              <div className="history-count">
+                {history.length} records
+              </div>
             </div>
 
-            <div className="ai-badge">
-              AI ANALYSIS
-            </div>
+            <div className="chart-area">
+              {chartData.length > 0 ? (
+                <ResponsiveContainer width="100%" height="100%">
+                  <LineChart
+                    data={chartData}
+                    margin={{
+                      top: 12,
+                      right: 18,
+                      left: -16,
+                      bottom: 4
+                    }}
+                  >
+                    <CartesianGrid
+                      vertical={false}
+                      strokeDasharray="3 3"
+                    />
 
-          </div>
+                    <XAxis
+                      dataKey="time"
+                      tickLine={false}
+                      axisLine={false}
+                      minTickGap={30}
+                    />
 
-          {latestAlert ? (
+                    <YAxis
+                      domain={[0, 100]}
+                      tickLine={false}
+                      axisLine={false}
+                      width={34}
+                    />
 
-            <div className="xai-content">
+                    <Tooltip
+                      formatter={(value) => [`${value}/100`, "Risk"]}
+                      labelFormatter={(label) => `Time · ${label}`}
+                    />
 
-              {/* MODEL PROBABILITY */}
-
-              <div className="model-result">
-
-                <div>
-
+                    <Line
+                      type="monotone"
+                      dataKey="risk"
+                      strokeWidth={2.5}
+                      dot={false}
+                      activeDot={{ r: 5 }}
+                    />
+                  </LineChart>
+                </ResponsiveContainer>
+              ) : (
+                <div className="empty-state">
+                  <div className="empty-symbol">—</div>
+                  <strong>No detection history yet</strong>
                   <span>
-                    MODEL PROBABILITY
+                    Monitoring data will appear here as cycles are recorded.
                   </span>
-
-                  <p>
-                    Probability of ransomware activity
-                  </p>
-
                 </div>
+              )}
+            </div>
+          </article>
 
-                <strong>
-                  {riskScore}%
-                </strong>
-
+          <article className="panel latest-panel">
+            <div className="panel-header">
+              <div>
+                <span className="section-kicker">LATEST CYCLE</span>
+                <h2>Detection snapshot</h2>
               </div>
+            </div>
 
-              {/* FACTORS */}
+            {stats?.latest ? (
+              <div className="snapshot-body">
 
-              <div className="factors-section">
-
-                <h3>
-                  Contributing Indicators
-                </h3>
-
-                <p className="factor-subtitle">
-                  Behavioral indicators associated with the latest detection.
-                </p>
-
-                <div className="factor-list">
-
-                  {indicators.length > 0 ? (
-
-                    indicators
-                      .slice(0, 6)
-                      .map((indicator, index) => {
-
-                        const width = Math.max(
-                          35,
-                          90 - index * 10
-                        );
-
-                        return (
-
-                          <div
-                            className="factor-row"
-                            key={`${index}-${formatIndicator(indicator)}`}
-                          >
-
-                            <div className="factor-number">
-                              {index + 1}
-                            </div>
-
-                            <div className="factor-info">
-
-                              <div className="factor-name">
-                                {formatIndicator(indicator)}
-                              </div>
-
-                              <div className="factor-bar">
-
-                                <div
-                                  style={{
-                                    width: `${width}%`
-                                  }}
-                                ></div>
-
-                              </div>
-
-                            </div>
-
-                          </div>
-
-                        );
-                      })
-
-                  ) : (
-
-                    <div className="no-indicators">
-                      No specific contributing indicators were returned
-                      for this detection.
-                    </div>
-
-                  )}
-
+                <div className="snapshot-risk">
+                  <span className={`snapshot-indicator ${getRiskTone(riskType)}`} />
+                  <div>
+                    <span className="snapshot-label">Risk type</span>
+                    <strong>{riskType}</strong>
+                  </div>
                 </div>
 
-              </div>
+                <div className="snapshot-grid">
+                  <SnapshotMetric
+                    label="Probability"
+                    value={`${riskScore}%`}
+                  />
 
-              {/* SIMPLE EXPLANATION */}
+                  <SnapshotMetric
+                    label="Files"
+                    value={stats.latest.files_observed ?? 0}
+                  />
 
-              <div className="explanation-box">
+                  <SnapshotMetric
+                    label="Suspicious"
+                    value={stats.latest.suspicious_files ?? 0}
+                  />
 
-                <div className="explanation-icon">
-                  ✦
+                  <SnapshotMetric
+                    label="High risk"
+                    value={stats.latest.high_risk_files ?? 0}
+                  />
                 </div>
 
-                <div>
-
+                <div className="snapshot-action">
+                  <span>Response</span>
                   <strong>
-                    Detection Explanation
+                    {stats.latest.response_action || "No action"}
                   </strong>
-
-                  <p>
-                    {riskScore >= 70
-                      ? "The AI model detected multiple behavioral patterns strongly associated with ransomware activity."
-                      : riskScore >= 35
-                      ? indicators.length > 0
-                        ? "The AI model detected behavioral patterns that may indicate suspicious activity and require attention."
-                        : "The model assigned a suspicious probability from the combined behavioral feature pattern, but no individual high-signal indicator was triggered in this cycle."
-                      : "The AI model currently detects no strong indicators of ransomware activity."}
-                  </p>
-
                 </div>
 
               </div>
-
-            </div>
-
-          ) : (
-
-            <div className="no-xai">
-
-              <div className="no-xai-icon">
-                🧠
+            ) : (
+              <div className="empty-state compact">
+                <div className="empty-symbol">—</div>
+                <strong>Waiting for monitoring data</strong>
+                <span>Start the monitoring pipeline to populate this panel.</span>
               </div>
-
-              <h3>
-                No AI explanation available
-              </h3>
-
-              <p>
-                XAI factors will appear when the system
-                records a non-safe detection.
-              </p>
-
-            </div>
-
-          )}
+            )}
+          </article>
 
         </section>
 
-        {/* =========================================
-            RECENT DETECTION HISTORY
-        ========================================= */}
+        {/* XAI */}
+        <section id="xai" className="section-block">
 
-        <section className="detections-panel">
+          <article className="panel xai-panel">
+            <div className="panel-header">
+              <div>
+                <span className="section-kicker">EXPLAINABLE AI</span>
+                <h2>Why the model raised the current result</h2>
+              </div>
 
-          <div className="detections-header">
+              <div className="xai-tag">BEHAVIORAL INDICATORS</div>
+            </div>
 
+            {indicators.length > 0 ? (
+              <div className="xai-grid">
+                <div className="xai-intro">
+                  <div className="xai-mark">AI</div>
+
+                  <h3>Observed signals</h3>
+
+                  <p>
+                    These indicators are taken from the latest detection
+                    response and describe the filesystem and process behavior
+                    associated with the model result.
+                  </p>
+                </div>
+
+                <div className="indicator-list">
+                  {indicators.slice(0, 6).map((indicator, index) => (
+                    <div className="indicator-row" key={`${indicator.name}-${index}`}>
+                      <div className="indicator-index">
+                        0{index + 1}
+                      </div>
+
+                      <div className="indicator-main">
+                        <strong>{formatIndicatorName(indicator.name)}</strong>
+
+                        {indicator.value !== "" && (
+                          <span>{String(indicator.value)}</span>
+                        )}
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              </div>
+            ) : (
+              <div className="xai-empty">
+                <div className="xai-empty-mark">AI</div>
+
+                <div>
+                  <strong>No contributing indicators reported</strong>
+                  <span>
+                    The latest cycle does not currently provide explainability
+                    indicators.
+                  </span>
+                </div>
+              </div>
+            )}
+          </article>
+
+        </section>
+
+        {/* RECENT DETECTIONS TABLE */}
+        <section className="section-block">
+
+          <div className="section-heading">
             <div>
-              <h2>Recent Detection History</h2>
-
-              <p>
-                Latest non-safe monitoring detections
-              </p>
+              <span className="section-kicker">SECURITY LOG</span>
+              <h2>Recent detections</h2>
             </div>
 
-            <div className="history-count">
-              {alerts.length} recorded
+            <div className="section-note">
+              Latest 10 records
             </div>
-
           </div>
 
-          {alerts.length > 0 ? (
+          <article className="panel detections-panel">
 
-            <div className="table-wrapper">
+            {alerts.length > 0 ? (
+              <div className="table-wrapper">
 
-              <table>
+                <table>
+                  <thead>
+                    <tr>
+                      <th>Time</th>
+                      <th>Risk</th>
+                      <th>Probability</th>
+                      <th>Files</th>
+                      <th>Filesystem</th>
+                      <th>Response</th>
+                    </tr>
+                  </thead>
 
-                <thead>
+                  <tbody>
+                    {alerts.map((alert, index) => {
+                      const probability = Number(
+                        alert?.probability ?? 0
+                      );
 
-                  <tr>
-                    <th>TIME</th>
-                    <th>RISK</th>
-                    <th>PROBABILITY</th>
-                    <th>FILES</th>
-                    <th>RESPONSE</th>
-                  </tr>
-
-                </thead>
-
-                <tbody>
-
-                  {alerts.map((alert, index) => {
-
-                    const probability =
-                      Number(alert.probability ?? 0);
-
-                    const probabilityPercent =
-                      probability <= 1
+                      const score = probability <= 1
                         ? Math.round(probability * 100)
                         : Math.round(probability);
 
-                    const alertClass =
-                      getStatusClass(alert.risk_level);
+                      const tone = getRiskTone(alert?.risk_level);
 
-                    return (
+                      return (
+                        <tr key={alert?.id ?? index}>
 
-                      <tr key={alert.id ?? index}>
+                          <td>
+                            <span className="table-time">
+                              {formatDateTime(alert?.timestamp)}
+                            </span>
+                          </td>
 
-                        <td>
-                          {alert.timestamp
-                            ? new Date(
-                                alert.timestamp
-                              ).toLocaleTimeString()
-                            : "--:--:--"}
-                        </td>
+                          <td>
+                            <span className={`table-risk ${tone}`}>
+                              <span />
+                              {alert?.risk_level || "Safe"}
+                            </span>
+                          </td>
 
-                        <td>
-                          <span
-                            className={`table-risk ${alertClass}`}
-                          >
-                            {alert.risk_level || "Unknown"}
-                          </span>
-                        </td>
+                          <td>
+                            <strong>{score}%</strong>
+                          </td>
 
-                        <td>
-                          {probabilityPercent}%
-                        </td>
+                          <td>
+                            {alert?.files_affected ??
+                              alert?.files_observed ??
+                              0}
+                          </td>
 
-                        <td>
-                          {alert.files_affected ?? 0}
-                        </td>
+                          <td>
+                            {alert?.filesystem_events ?? 0}
+                          </td>
 
-                        <td>
-                          {alert.response_action || "No action"}
-                        </td>
+                          <td>
+                            <span className="response-text">
+                              {alert?.response_action || "No action"}
+                            </span>
+                          </td>
 
-                      </tr>
+                        </tr>
+                      );
+                    })}
+                  </tbody>
+                </table>
 
-                    );
+              </div>
+            ) : (
+              <div className="empty-detections">
+                <div className="empty-symbol">—</div>
+                <strong>No detections recorded</strong>
+                <span>
+                  Security events will appear here when the monitoring system
+                  records them.
+                </span>
+              </div>
+            )}
 
-                  })}
-
-                </tbody>
-
-              </table>
-
-            </div>
-
-          ) : (
-
-            <div className="empty-detections">
-              No non-safe detections recorded in the current history.
-            </div>
-
-          )}
-
+          </article>
         </section>
 
-        {/* =========================================
-            FOOTER
-        ========================================= */}
-
-        <div className="footer">
-
-          <span>
-            ● {monitoringActive
-              ? "Monitoring active"
-              : "Monitoring status unavailable"}
-          </span>
-
-          <span>
-            Last update: {lastUpdated}
-          </span>
-
-        </div>
+        {/* FOOTER */}
+        <footer className="footer">
+          <span>RansomWatchAI</span>
+          <span>AI-based early ransomware detection prototype</span>
+          <span>Live monitoring · 24h history</span>
+        </footer>
 
       </main>
-
     </div>
   );
+}
+
+function StatCard({ label, value, helper, tone }) {
+  return (
+    <article className={`stat-card ${tone}`}>
+      <div className="stat-card-top">
+        <span>{label}</span>
+        <span className="stat-dot" />
+      </div>
+
+      <strong>{Number(value).toLocaleString()}</strong>
+
+      <p>{helper}</p>
+    </article>
+  );
+}
+
+function SnapshotMetric({ label, value }) {
+  return (
+    <div className="snapshot-metric">
+      <span>{label}</span>
+      <strong>{Number(value).toLocaleString()}</strong>
+    </div>
+  );
+}
+
+function formatIndicatorName(value) {
+  return String(value)
+    .replaceAll("_", " ")
+    .replace(/\b\w/g, (letter) => letter.toUpperCase());
 }
 
 export default App;
